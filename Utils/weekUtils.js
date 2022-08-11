@@ -1,10 +1,23 @@
+const msToDate = require('./msToDate.js');
+
 /* 获取时间段内属于星期一(*)的日期们
  * begin: 开始时间
  * end：结束时间
  * weekNum：星期几 {number}
  */
-export const getMondayInAPeriod = function(beginDate, endDate, weekNum){
-    var dateArr = new Array();
+function updateBeginTime(beginTimeDate, weekDay) {
+  const curWeekDay = beginTimeDate.getDay();
+  const diff = curWeekDay - weekDay;
+  if (!diff) {
+    return msToDate(parseInt(beginTimeDate.getTime())).withoutTime;
+  } else {
+    beginTimeDate.setDate(beginTimeDate.getDate() - diff);
+    return msToDate(parseInt(beginTimeDate.getTime())).withoutTime;
+  }
+}
+
+function getMondayInAPeriod(beginDate, endDate, weekNum) {
+  var dateArr = new Array();
   const _begin = updateBeginTime(new Date(begin), weekNum);
 
   var stimeArr = _begin.split("-");//=>["2018", "01", "01"]
@@ -28,3 +41,5 @@ export const getMondayInAPeriod = function(beginDate, endDate, weekNum){
   }
   return dateArr;
 };
+
+modules.exports = getMondayInAPeriod;
